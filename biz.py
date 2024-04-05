@@ -58,7 +58,7 @@ if selected == "Home":
     with col1:    
         st.markdown("## :red[**Technologies Used :**] Python,easy OCR, Streamlit, SQL, Pandas")
     with col2:
-        st.markdown("## :red[**Overview :**] In this Streamlit web app, users can upload an image of a business card, and the application utilizes EasyOCR to extract pertinent information. The extracted data can be viewed, modified, or deleted within the app. Additionally, users have the capability to save the extracted details, including the business card image, into a database. The database supports multiple entries, each with its corresponding business card image and extracted information. Users can manage and organize their business card data efficiently through this user-friendly application.")
+        st.markdown("## :red[**Overview :**] In this Streamlit web app, users can upload an image of a business card, and the application utilizes EasyOCR to extract  information. The extracted data can be read, modified, or deleted within the app. Additionally, users have the capability to save the extracted details, including the business card image, into a database. The database supports multiple entries, each with its corresponding business card image and extracted information.")
 
         
         
@@ -117,7 +117,7 @@ if selected == "Upload & Extract":
             st.markdown("### :white[You have uploaded the card]")
             st.image(uploaded_card)
         with col2:
-            with st.spinner(":green[Please wait processing image...]"):
+            with st.spinner(":white[Please wait processing image...]"):
                 st.set_option('deprecation.showPyplotGlobalUse', False)
                 saved_img = os.getcwd()+ "\\" + "uploaded_cards"+ "\\"+ uploaded_card.name
                 image = cv2.imread(saved_img)
@@ -218,7 +218,7 @@ if selected == "Upload & Extract":
             df = pd.DataFrame(data)
             return df
         df = create_df(data)
-        st.success("### Data Extracted!")
+        st.success("### :white[Data Extracted!]")
         st.write(df)
         
         def is_duplicate(card_data):
@@ -235,7 +235,7 @@ if selected == "Upload & Extract":
                                 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
                         mycursor.execute(sql, tuple(row))
                         mydb.commit()
-                        st.success("uploaded successfully")                       
+                        st.success("### :white[uploaded successfully]")                       
                     else:
                         st.warning("Duplicate entry found.Skipped insertion.")
                    
@@ -269,12 +269,12 @@ if selected == "Modify":
             state = st.text_input(":green[State]", result[8])
             pin_code = st.text_input(":green[Pin_Code]", result[9])
 
-            if st.button("Commit changes to DB"):
+            if st.button("Commit changes to DataBase"):
                 # Update the information for the selected business card in the database
                 mycursor.execute("""UPDATE card_data SET company_name=%s,card_holder=%s,designation=%s,mobile_number=%s,email=%s,website=%s,area=%s,city=%s,state=%s,pin_code=%s
                                     WHERE card_holder=%s""", (company_name,card_holder,designation,mobile_number,email,website,area,city,state,pin_code,selected_card))
                 mydb.commit()
-                st.success("Information updated in database successfully.")
+                st.success("### :white[Information updated in database successfully.]")
 
         with column2:
             mycursor.execute("SELECT card_holder FROM card_data")
@@ -284,12 +284,12 @@ if selected == "Modify":
                 business_cards[row[0]] = row[0]
             selected_card = st.selectbox("Select a card holder name to Delete", list(business_cards.keys()))
             st.write(f"### You have selected :green[**{selected_card}'s**] card to delete")
-            st.write("#### Proceed to delete this card?")
+            st.write("#### :white[Proceed to delete this card?]")
 
             if st.button("Yes Delete Business Card"):
                 mycursor.execute(f"DELETE FROM card_data WHERE card_holder='{selected_card}'")
                 mydb.commit()
-                st.success("Business card information deleted from database.")
+                st.success("#### :white[Business card information deleted from database.]")
     except:
         st.warning("There is no data available in the database")
     
